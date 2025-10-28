@@ -1,11 +1,53 @@
+<<<<<<< HEAD
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+=======
+import { useEffect, useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import { supabase } from './supabaseClient'
+>>>>>>> 72ebcbd (Done set up of application)
 import './App.css'
 
 function App() {
 
+<<<<<<< HEAD
   return (
+=======
+  const [session, setSession] = useState([])
+
+  useEffect(() => {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session)
+      })
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session)
+      })
+      return () => subscription.unsubscribe()
+    }, [])
+
+    const signIn = async()=>{
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      })
+    }
+
+    const signOut = async()=>{
+     const {error} = await supabase.auth.signOut()
+    }
+
+  if(!session){
+    return (
+      <div className='w-full flex  h-screen justify-center items-center'>
+        <button>Sign in with Google to chat</button>
+      </div>
+    )
+  }else{
+     return (
+>>>>>>> 72ebcbd (Done set up of application)
     <div className='w-full flex  h-screen justify-center items-center p-4'>
       <div className='border-[1px] border-gray-700 max-w-6xl w-full min-h-[450px] rounded-lg'>
         {/* Header */}
@@ -14,7 +56,11 @@ function App() {
             <p className='text-gray-300'>Signed is as name..</p>
             <p className='text-gray-300 italic text-sm'>3 users online </p>
           </div>
+<<<<<<< HEAD
           <button className='m-2 sm:mr-4'>Sign out</button>
+=======
+          <button onClick={signOut} className='m-2 sm:mr-4'>Sign out</button>
+>>>>>>> 72ebcbd (Done set up of application)
         </div>
         {/* main chat */}
         <div></div>
@@ -26,6 +72,11 @@ function App() {
       </div>
     </div>
   )
+<<<<<<< HEAD
+=======
+  }
+ 
+>>>>>>> 72ebcbd (Done set up of application)
 }
 
 export default App
