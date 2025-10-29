@@ -1,11 +1,4 @@
-
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import { supabase } from './supabaseClient'
 import './App.css'
 
@@ -24,6 +17,8 @@ function App() {
       })
       return () => subscription.unsubscribe()
     }, [])
+    console.log(session);
+    
 
     const signIn = async()=>{
       await supabase.auth.signInWithOAuth({
@@ -38,7 +33,7 @@ function App() {
   if(!session){
     return (
       <div className='w-full flex  h-screen justify-center items-center'>
-        <button>Sign in with Google to chat</button>
+        <button onClick={signIn}>Sign in with Google to chat</button>
       </div>
     )
   }else{
@@ -48,10 +43,9 @@ function App() {
         {/* Header */}
         <div className='flex justify-between h-20 border-b-[1px] border-gray-700'>
           <div className='p-4'>
-            <p className='text-gray-300'>Signed is as name..</p>
+            <p className='text-gray-300'>Signed is as {session?.user?.user_metadata?.full_name}</p>
             <p className='text-gray-300 italic text-sm'>3 users online </p>
           </div>
-          <button className='m-2 sm:mr-4'>Sign out</button>
           <button onClick={signOut} className='m-2 sm:mr-4'>Sign out</button>
         </div>
         {/* main chat */}
