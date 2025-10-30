@@ -70,16 +70,19 @@ function App() {
     };
   }, [session]);
 
+  console.log(session);
+
   //send message
   const sendMessage = async (e) => {
     e.preventDefault();
     const messageData = {
       message: newMessage,
-      user_name: session?.user?.user_metadata?.full_name,
-      avatar: session?.user?.user_metadata?.avatar,
+      user_name: session?.user?.user_metadata?.email,
+      avatar: session?.user?.user_metadata?.avatar_url,
       timestamp: new Date().toISOString(),
     };
     console.log("user_name is : ", messageData.user_name);
+    console.log("sessions user name : ", session?.user?.user_metadata?.email);
 
     // Send to others
     supabase.channel("chatroom1").send({
@@ -121,13 +124,41 @@ function App() {
             {messages.map((msg, idx) => (
               <div
                 className={`my-2 flex w-full items-start ${
-                  msg.user_name === session?.user?.user_metadata?.full_name
+                  msg.user_name === session?.user?.user_metadata?.email
                     ? "justify-end"
                     : "justify-start"
                 }`}
                 key={idx}
               >
-                <p>{msg.message}</p>
+                {msg.user_name === session?.user?.user_metadata?.email && (
+                  <img
+                    src={msg.avatar}
+                    alt=""
+                    className="w-10 h-10 rounded-full mr-2"
+                  />
+                )}
+
+                <div className="flex flex-col w-full">
+                  <div
+                    className={`p-1 max-w-[70%] rounded-xl ${
+                      msg.user_name === session?.user?.user_metadata?.email
+                        ? "bg-gray-700 text-white ml-auto"
+                        : "bg-gray-500 text-white mr-auto"
+                    }`}
+                  >
+                    <p>{msg.message}</p>
+                  </div>
+                  {/* time stamp */}
+                  <div
+                    className={`text-xs opacity-75 pt-1 ${
+                      msg.user_name === session?.user?.user_metadata?.email
+                        ? "text-right mr-2"
+                        : "text-left ml-2"
+                    }`}
+                  >
+                    {msg.timestamp}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
