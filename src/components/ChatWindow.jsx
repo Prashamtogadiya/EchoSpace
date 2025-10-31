@@ -13,7 +13,8 @@ export default function ChatWindow({ messages, session, chatContainerRef }) {
   return (
     <div
       ref={chatContainerRef}
-      className="p-4 flex flex-col overflow-y-auto h-[500px] bg-gradient-to-b from-gray-900 via-gray-850 to-gray-900 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800"
+      // Smoother dark background
+      className="p-6 flex flex-col overflow-y-auto h-[500px] bg-gray-900 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900"
     >
       {messages.map((msg, idx) => {
         const isMe = msg.user_name === userEmail;
@@ -22,44 +23,55 @@ export default function ChatWindow({ messages, session, chatContainerRef }) {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             key={idx}
-            className={`my-3 flex w-full items-end ${
+            className={`my-2.5 flex w-full items-end ${
               isMe ? "justify-end" : "justify-start"
             }`}
           >
+            {/* Other User Avatar */}
             {!isMe && (
               <img
                 src={msg.avatar}
                 alt="avatar"
-                className="w-10 h-10 rounded-full mr-3 border border-gray-600 shadow-md"
+                className="w-9 h-9 rounded-full mr-2 object-cover border-2 border-gray-700"
               />
             )}
 
-            <div className={`flex flex-col max-w-[75%] ${isMe ? "items-end" : "items-start"}`}>
+            <div className={`flex flex-col max-w-[70%] ${isMe ? "items-end" : "items-start"}`}>
+              {/* Message Bubble - Rounded and soft color palette */}
               <div
-                className={`p-3 rounded-2xl shadow-lg backdrop-blur-md ${
+                className={`p-3 rounded-2xl shadow-md transition-all duration-200 ${
                   isMe
-                    ? "bg-blue-600 text-white rounded-br-none"
-                    : "bg-gray-700 text-gray-100 rounded-bl-none"
+                    // My messages: Muted, smoothing teal
+                    ? "bg-teal-600 text-white rounded-br-lg"
+                    // Other messages: Soft dark card color
+                    : "bg-gray-700 text-gray-100 rounded-tl-lg"
                 }`}
               >
-                <p className="text-sm break-words leading-relaxed">{msg.message}</p>
+                 {!isMe && (
+                  <p className="text-xs font-semibold text-teal-300 mb-0.5">
+                    {msg.user_name?.split('@')[0]}
+                  </p>
+                )}
+                <p className="text-base break-words leading-snug">{msg.message}</p>
               </div>
+              {/* Timestamp */}
               <span
-                className={`text-xs text-gray-400 mt-1 ${
-                  isMe ? "text-right" : "text-left"
+                className={`text-xs text-gray-500 mt-1 ${
+                  isMe ? "text-right mr-1" : "text-left ml-1"
                 }`}
               >
                 {formatTime(msg.timestamp)}
               </span>
             </div>
 
+            {/* My Avatar */}
             {isMe && (
               <img
                 src={msg.avatar}
                 alt="avatar"
-                className="w-10 h-10 rounded-full ml-3 border border-gray-600 shadow-md"
+                className="w-9 h-9 rounded-full ml-2 object-cover border-2 border-teal-500"
               />
             )}
           </motion.div>
