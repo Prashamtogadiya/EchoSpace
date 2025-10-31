@@ -1,5 +1,29 @@
 import React from "react";
 import { LogOut, Users } from "lucide-react";
+import { motion } from "framer-motion";
+
+function AnimatedE() {
+  return (
+    <motion.span
+      animate={{
+        y: [0, -3, 0],
+        textShadow: [
+          "0px 0px 4px #60a5fa",
+          "0px 0px 10px #a855f7",
+          "0px 0px 4px #60a5fa",
+        ],
+      }}
+      transition={{
+        duration: 2,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+      className="text-white font-bold text-xl"
+    >
+      E
+    </motion.span>
+  );
+}
 
 export default function Header({ session, usersOnline, onSignOut }) {
   return (
@@ -7,7 +31,7 @@ export default function Header({ session, usersOnline, onSignOut }) {
       <div className="flex items-center gap-4">
         {/* Logo/Brand */}
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-          <span className="text-white font-bold text-xl">E</span>
+          <AnimatedE />
         </div>
 
         {/* User Profile Info */}
