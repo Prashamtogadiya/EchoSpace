@@ -1,60 +1,34 @@
 # EchoSpace
 
-EchoSpace is a lightweight real-time chat demo where messages instantly propagate to all connected clients. Built with React (Vite) and Supabase, the project demonstrates live data sync, a minimal UI, and a simple serverless backend pattern.
+EchoSpace is a lightweight real-time chat demo built with React (Vite) and Supabase. It demonstrates live message broadcasting to all connected clients with a minimal UI and a simple serverless backend pattern.
 
-## Quick overview
-- Real-time messaging using Supabase Realtime
-- Vite + React frontend for fast local development
-- Minimal, extensible data model and client logic
-
-## Table of contents
-- Features
-- Tech stack
-- Requirements
-- Environment
-- Quick start
-- Database schema
-- Scripts
-- Deployment
-- Troubleshooting
-- Contributing
-- License
-
-## Features
-- Live message broadcasting across clients
-- Simple, responsive UI (React + Vite)
-- Easy to extend (auth, rooms, persistence)
-
-## Tech stack
-- React (Vite)
-- Supabase (Postgres + Realtime)
-- Optional: Supabase Edge Functions for server-side logic
-
-## Requirements
-- Node.js 16+ (recommended)
-- npm, yarn, or pnpm
-- Supabase project (free tier is fine)
-
-## Environment
-Create a .env or .env.local file in the project root with:
-- SUPABASE_URL=https://your-project-ref.supabase.co
-- SUPABASE_ANON_KEY=your-public-anon-key
-
-Do not commit secrets. Use your hosting provider's environment settings for production.
+Why this repo
+- Small, focused example for realtime updates using Supabase Realtime.
+- Good starting point for adding auth, rooms, persistence, or integrating with Supabase Edge Functions.
+- Easy to run locally for testing and demos.
 
 ## Quick start (local)
-1. Clone:
+1. Clone the repo:
    - git clone <repo-url>
    - cd EchoSpace
-2. Install:
+2. Install dependencies:
    - npm install
-3. Add environment variables (.env.local)
-4. Start dev server:
+3. Add environment variables:
+   - Create a file at the project root named `.env` or `.env.local` with the values below.
+4. Run the dev server:
    - npm run dev
-5. Open the URL shown by Vite (usually http://localhost:5173)
+5. Open the URL printed by Vite (default: http://localhost:5173)
+
+## Required environment variables
+Create .env or .env.local (do not commit this file):
+
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_ANON_KEY=your-public-anon-key
+
+Note: Use the anon (public) key for client-side demos. Keep service_role keys out of frontend code.
 
 ## Minimal database schema
-Create a messages table (example SQL):
+Run this SQL in your Supabase project's SQL editor to create a simple messages table:
 
 ```sql
 -- Example: minimal messages table
@@ -66,35 +40,24 @@ CREATE TABLE messages (
 );
 ```
 
-Enable realtime replication and Row Level Security (RLS) as appropriate for your project.
+Enable realtime replication for the messages table in Supabase if you want live updates.
 
-## Example message (client)
-- { id, content, username, created_at }
+## How it works (short)
+- Frontend: React app (Vite) connects to Supabase using SUPABASE_URL and SUPABASE_ANON_KEY.
+- Realtime: Clients subscribe to changes on the messages table; inserts broadcast to all connected clients.
+- Backend: There is no required server — Supabase handles persistence and realtime updates. Add Edge Functions if you need server-side logic.
 
-## Scripts
+## Useful npm scripts
 - npm run dev — start dev server
-- npm run build — build production assets
-- npm run preview — serve production build locally
-
-(Add lint/test scripts if present.)
-
-## Deployment
-- Frontend: Vercel, Netlify, or Cloudflare Pages
-- Set SUPABASE_URL and SUPABASE_ANON_KEY in your host environment
-- If using Supabase functions, deploy via the Supabase CLI or dashboard
+- npm run build — build for production
+- npm run preview — serve the production build locally
 
 ## Troubleshooting
-- "Cannot connect to Supabase": verify SUPABASE_URL and SUPABASE_ANON_KEY values
-- "Realtime updates not received": check Supabase Realtime settings and table replication
-- Inspect browser console and server logs for errors
+- "Cannot connect to Supabase": verify SUPABASE_URL and SUPABASE_ANON_KEY are correct and not wrapped in quotes.
+- "Realtime updates not received": confirm table replication is enabled in Supabase and that RLS/Policies allow the anon key to read/replicate events.
+- Check browser console for client-side errors and Supabase project logs for backend issues.
 
 ## Contributing
-- Open issues for bugs/feature requests
-- Create PRs against main with a clear description
-- Keep secrets out of commits
-
-## License
-Add your license here (e.g., MIT). Replace this line with the chosen license block.
-
-## Notes for reviewers
-Check Quick start, Environment, and Database schema sections first — they make the project easy to run and verify.
+- Open issues for bugs or feature requests.
+- Send a PR with a clear description and small, focused changes.
+- Keep secrets out of commits.
