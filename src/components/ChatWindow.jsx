@@ -43,6 +43,16 @@ export default function ChatWindow({ messages, session, chatContainerRef }) {
       {messages.map((msg, idx) => {
         const isMe = msg.user_name === userEmail;
 
+        // compute display name: prefer full-name fields, fall back to email local-part
+        const displayName =
+          msg.fullName ||
+          msg.full_name ||
+          msg.name ||
+          msg.displayName ||
+          msg.user?.fullName ||
+          msg.user?.full_name ||
+          msg.user_name?.split("@")[0];
+
         return (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -80,7 +90,7 @@ export default function ChatWindow({ messages, session, chatContainerRef }) {
               >
                 {!isMe && (
                   <p className="text-xs font-bold text-purple-300 mb-1.5">
-                    {msg.user_name?.split("@")[0]}
+                    {displayName}
                   </p>
                 )}
                 <p className="text-base break-words leading-relaxed">
